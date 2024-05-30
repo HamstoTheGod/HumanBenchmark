@@ -11,17 +11,4 @@ while True:
         pyautogui.click(billede_koordinater)
     
 
-import time
 
-try:
-    while True:
-        # Get the current mouse position
-        x, y = pyautogui.position()
-        
-        # Print the position
-        print(f"Mouse position: ({x}, {y})")
-        
-        # Sleep for a short duration to avoid flooding the output
-        time.sleep(0.1)
-except KeyboardInterrupt:
-    print("Program stopped by user.")
