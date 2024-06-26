@@ -1,0 +1,18 @@
+import pyautogui
+import time
+
+time.sleep(5)
+
+postion=pyautogui.position()
+
+
+#Blå 43,135,209
+#Grøn 75,219,106
+number=0
+while True:
+    px = pyautogui.pixel(postion.x, postion.y)
+    if px==(43,135,209) or px==(75,219,106):
+        pyautogui.click()
+        number+=1
+        if number>10:
+            break
