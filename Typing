@@ -1,0 +1,44 @@
+import time
+import pyautogui
+import pytesseract
+import numpy as np
+import cv2
+from PIL import Image
+
+# Define the path to the Tesseract executable
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\tesseract.exe"  # Update this path to your tesseract executable
+time.sleep(1)
+top_af_læs=pyautogui.locateCenterOnScreen(image="Top_af_OCR.png",confidence=0.85)
+
+bund_af_læs=pyautogui.locateCenterOnScreen(image="Bund_af_OCR.png",confidence=0.85)
+skærm_x, skærm_y = pyautogui.size()
+
+# Take a screenshot of the specified region
+screenshot = pyautogui.screenshot(region=(0, top_af_læs.y, skærm_x, bund_af_læs.y-top_af_læs.y))
+
+# Convert the screenshot to a numpy array
+img_np = np.array(screenshot)
+
+# Convert RGB to BGR (OpenCV format)
+#img_cv2 = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
+
+# Optionally, preprocess the image for better OCR results
+# Convert to grayscale
+gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+
+
+img_pil = Image.fromarray(gray)
+
+# Use Tesseract to do OCR on the image
+text = pytesseract.image_to_string(img_pil)
+
+# Print the extracted text
+
+
+text=text.replace("|","I")
+text+="."
+print(text)
+pyautogui.typewrite(text)
+
+#Top_af_OCR.png
+#Bund_af_OCR.png
