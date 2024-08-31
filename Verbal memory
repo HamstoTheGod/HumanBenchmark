@@ -1,0 +1,58 @@
+import time
+import pyautogui
+import pytesseract
+import numpy as np
+import cv2
+from PIL import Image
+import keyboard
+
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\path\tesseract.exe"  # Vejen til  teesracft
+time.sleep(2)
+top_af_læs=pyautogui.locateCenterOnScreen(image="Lives.png",confidence=0.85)
+
+bund_af_læs=pyautogui.locateCenterOnScreen(image="Seen.png",confidence=0.85)
+new_location=pyautogui.locateCenterOnScreen(image="New.png",confidence=0.85)
+skærm_x, skærm_y = pyautogui.size()
+
+liste_af_ord=[]
+
+
+
+
+while not keyboard.is_pressed('b'):
+    screenshot = pyautogui.screenshot(region=(0, top_af_læs.y+20, skærm_x, bund_af_læs.y-top_af_læs.y-20))
+
+    img_np = np.array(screenshot)
+
+    gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+
+    img_pil = Image.fromarray(gray)
+
+    text = pytesseract.image_to_string(img_pil)
+   
+    try:
+        text1,text2=text.split("\n")
+    except: 
+        try:
+            text1,text2,text3=text.split("\n")
+        except:
+            pass
+        
+    if text1 not in liste_af_ord:
+        pyautogui.click(new_location)
+        
+        liste_af_ord.append(text1)
+    else:
+        pyautogui.click(bund_af_læs)
+    
+
+file = open('Chjeck.txt', 'w',encoding='utf-8')
+for string in liste_af_ord:
+    file.write(string)
+
+
+
+
+#Top_af_OCR.png
+#Bund_af_OCR.png
